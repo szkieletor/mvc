@@ -18,36 +18,52 @@ namespace WebApplication4.Controllers
             return View();
         }
 
-        public ActionResult AddUser()
-        {
 
-            return View();
+        public void UpdateUserRoles(UserWithRolesViewModel changedUserData)
+        {
+            var manager = new IdentityManager();
+            var user = manager.GetUserByName(changedUserData.User.UserName);
+            manager.ClearUserRoles(user.Id);
+            if (changedUserData.Admin.IsActive == true) manager.AddUserToRole(user.Id, "Admin");
+            if (changedUserData.Teacher.IsActive == true) manager.AddUserToRole(user.Id, "Teacher");
+            if (changedUserData.Student.IsActive == true) manager.AddUserToRole(user.Id, "Student");
+            if (changedUserData.Parent.IsActive == true) manager.AddUserToRole(user.Id, "Parent");
         }
 
-        public ActionResult Roles()
+
+        public JsonResult GetRoles()
         {
             var manager = new IdentityManager();
             var roles = manager.GetAllRoles();
             var users = manager.GetAllUsers();
-            var rolesViewModel = new RolesViewModel();
+            var userList = new List<UserWithRolesViewModel>();
             foreach (var user in users)
             {
                 var userWithRolesViewModel = new UserWithRolesViewModel();
                 var userViewModel = new UserViewModel();
                 userViewModel.UserName = user.UserName;
                 userWithRolesViewModel.User = userViewModel;
-                foreach (var role in roles)
-                {
-                    var roleViewModel = new RoleViewModel();
-                    roleViewModel.Name = role.Name;
-                    if (user.Roles.FirstOrDefault(r => r.Role.Name == role.Name) != null) roleViewModel.IsActive = true;
-                    else roleViewModel.IsActive = false;
-                    userWithRolesViewModel.Roles.Add(roleViewModel);
-                }
-                rolesViewModel.RolesByUser.Add(userWithRolesViewModel);
+                var roleViewModel = new RoleViewModel();
+                userWithRolesViewModel.Admin.Name = "Admin";
+                if (user.Roles.FirstOrDefault(r => r.Role.Name == "Admin") != null) userWithRolesViewModel.Admin.IsActive = true;
+                else userWithRolesViewModel.Admin.IsActive = false;
+
+                userWithRolesViewModel.Student.Name = "Student";
+                if (user.Roles.FirstOrDefault(r => r.Role.Name == "Student") != null) userWithRolesViewModel.Student.IsActive = true;
+                else userWithRolesViewModel.Student.IsActive = false;
+
+                userWithRolesViewModel.Teacher.Name = "Teacher";
+                if (user.Roles.FirstOrDefault(r => r.Role.Name == "Teacher") != null) userWithRolesViewModel.Teacher.IsActive = true;
+                else userWithRolesViewModel.Teacher.IsActive = false;
+
+                userWithRolesViewModel.Parent.Name = "Parent";
+                if (user.Roles.FirstOrDefault(r => r.Role.Name == "Parent") != null) userWithRolesViewModel.Parent.IsActive = true;
+                else userWithRolesViewModel.Parent.IsActive = false;
+
+                userList.Add(userWithRolesViewModel);
             }
 
-            return PartialView(rolesViewModel);
+            return Json(userList);
         }
 	}
 }

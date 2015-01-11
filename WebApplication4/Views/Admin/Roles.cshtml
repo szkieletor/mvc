@@ -1,56 +1,91 @@
 ﻿
+
 @{
     ViewBag.Title = "Roles";
 }
-
-<h2>Roles</h2>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
-
-<div ng-app="roles">
-    
-    <div ng-controller="rolesController">
-        <ul>
-            <li ng-repeat="item in gridData">
-                {{item.UserName}}
-            </li>
-        </ul>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.css" rel="stylesheet" type="text/css">
+@*<table>
+    <thead>
+        <tr>
+            <th>User name</th>
+            <th>Student</th>
+            <th>Admin</th>
+            <th>Parent</th>
+            <th>Teacher</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.RolesByUser)
+    {
+        <tr>
+            <td>@item.User.UserName</td>
+            @foreach (var role in item.Roles)
+            {
+                <td>
+                    @Html.CheckBox("roleCheckbox", role.IsActive)
+                </td>
+            }
+        </tr>
+    }
+</table>*@
+<div ng-app="myApp">
+    <div ng-controller="MyCtrl">
+        Filter: <input type="text" ng-model="filterOptions.filterText" />
+        <div class="gridStyle" ng-grid="gridOptions">
+        </div>
+        {{myData}}
+        {{filterOptions}}
+        <div class="gridStyle" ng-grid="parentGrid"></div>
     </div>
 </div>
 
-<script type="text/javascript">
-    var roles = angular.module('roles', []);
-    roles.controller('rolesController', function ($scope, $http) {
-        $scope.test = "aaaaaa";
-        $scope.myData = {
-            roleList: [],
+<script>
+    var app = angular.module('myApp', ['ngGrid']);
+    app.controller('MyCtrl', function ($scope, $http) {
+
+        $scope.updateEntity = function(data) {
+            $http.post('@Url.Action("UpdateUserRoles")', { changedUserData: data });
+        }
+
+        $scope.filterOptions = {
+            filterText: ''
         };
 
-        $scope.gridData = [
-            { 'UserName': "Test", 'IsAdmin': false, 'IsTeacher': false }
-        ];
-
-        $scope.myData.roleList = $scope.gridData;
- 
-        $scope.grid = {
-            options: {
-                data: 'myData',
-                columnDefs: [{
-                    field: 'UserName',
-                    displayName: 'User Name'
-                }, {
-                    field: 'IsAdmin',
-                    displayName: 'Admin',
-                    enableCellEdit: true
-                }, {
-                    field: 'IsTeacher',
-                    displayName: 'Teacher'
-                }
-                ]
+        $scope.gridOptions = {
+            data: 'myData',
+            filterOptions: $scope.filterOptions,
+            columnDefs: [{ field: 'User.UserName', displayName: 'Name' },
+                         { field: 'Admin.IsActive', displayName: 'Admin', cellTemplate: '<input type="checkbox" ng-model="row.entity.Admin.IsActive" ng-blur="updateEntity(row.entity)" ng-click="toggle(row.entity.Admin.IsActive)">' },
+                         { field: 'Student.IsActive', displayName: 'Student', cellTemplate: '<input type="checkbox" ng-model="row.entity.Student.IsActive" ng-blur="updateEntity(row.entity)"  ng-click="toggle(row.entity.Student.IsActive)">' },
+                         { field: 'Teacher.IsActive', displayName: 'Teacher', cellTemplate: '<input type="checkbox" ng-model="row.entity.Teacher.IsActive" ng-blur="updateEntity(row.entity)" ng-click="toggle(row.entity.Teacher.IsActive) ">' },
+                         { field: 'Parent.IsActive', displayName: 'Parent', cellTemplate: '<input type="checkbox" ng-model="row.entity.Parent.IsActive" ng-blur="updateEntity(row.entity)" ng-click="toggle(row.entity.Parent.IsActive)">' },
+                         ]
+        };
+        @*$.ajax({
+            url: '@Url.Action("GetRoles")',
+            type: 'POST',
+            success: function (data) {
+                //var parsedData = JSON.parse(data);
+                //var arrayData = $.parseJSON(parsedData);
+                $scope.myData = data;
             }
+        });*@
 
-        };
-
+        $http.post('@Url.Action("GetRoles")').success(function (data) {
+            $scope.myData = data;
+        });
     });
+
+
 
 </script>
 
+<style>
+    .gridStyle {
+        border: 1px solid rgb(212,212,212);
+        width: 800px;
+        height: 300px;
+    }
+</style>

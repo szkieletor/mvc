@@ -25,23 +25,18 @@ namespace WebApplication4.Models
     public class UserWithRolesViewModel
     {
         public UserViewModel User { get; set; }
-        public List<RoleViewModel> Roles { get; set; }
+        public RoleViewModel Admin { get; set; }
+        public RoleViewModel Student { get; set; }
+        public RoleViewModel Teacher { get; set; }
+        public RoleViewModel Parent { get; set; }
 
         public UserWithRolesViewModel()
         {
             User = new UserViewModel();
-            Roles = new List<RoleViewModel>();
+            Admin = new RoleViewModel();
+            Student = new RoleViewModel();
+            Teacher = new RoleViewModel();
+            Parent = new RoleViewModel();
         }
     }
-
-    public class RolesViewModel
-    {
-        public List<UserWithRolesViewModel> RolesByUser { get; set; }
-
-        public RolesViewModel()
-        {
-            RolesByUser = new List<UserWithRolesViewModel>();
-        }
-    }
-
 }

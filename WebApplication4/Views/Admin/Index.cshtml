@@ -11,7 +11,8 @@
 </head>
 <body>
     <div> 
-        @Html.Action("Roles")
+        @Html.Partial("Roles");
     </div>
+    Add user: <input type="button" value="Create user" onclick="location.href='@Url.Action("Register", "Account")'" />
 </body>
 </html>

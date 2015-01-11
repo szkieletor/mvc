@@ -85,7 +85,7 @@ namespace WebApplication4.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Admin");
                 }
                 else
                 {
@@ -181,6 +181,7 @@ namespace WebApplication4.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
 
         //
         // POST: /Account/ExternalLogin
