@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>Roles</h2>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.8/angular.min.js"></script>
+
+<div ng-app="roles">
+    
+    <div ng-controller="rolesController">
+        <ul>
+            <li ng-repeat="item in gridData">
+                {{item.UserName}}
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var roles = angular.module('roles', []);
+    roles.controller('rolesController', function ($scope, $http) {
+        $scope.test = "aaaaaa";
+        $scope.myData = {
+            roleList: [],
+        };
+
+        $scope.gridData = [
+            { 'UserName': "Test", 'IsAdmin': false, 'IsTeacher': false }
+        ];
+
+        $scope.myData.roleList = $scope.gridData;
+ 
+        $scope.grid = {
+            options: {
+                data: 'myData',
+                columnDefs: [{
+                    field: 'UserName',
+                    displayName: 'User Name'
+                }, {
+                    field: 'IsAdmin',
+                    displayName: 'Admin',
+                    enableCellEdit: true
+                }, {
+                    field: 'IsTeacher',
+                    displayName: 'Teacher'
+                }
+                ]
+            }
+
+        };
+
+    });
+
+</script>
+
