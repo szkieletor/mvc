@@ -27,7 +27,7 @@ namespace WebApplication4.Models
         public ApplicationDbContext()
             : base("DefaultConnection")
         {
-            this.Configuration.LazyLoadingEnabled = true;
+            Configuration.LazyLoadingEnabled = true;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
