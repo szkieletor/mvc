@@ -1,0 +1,75 @@
+﻿@model IEnumerable<WebApplication4.Models.Question>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Exam.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Desc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Correct)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Value)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exam.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Desc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Correct)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Value)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.QuestionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.QuestionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.QuestionID })
+        </td>
+    </tr>
+}
+
+</table>

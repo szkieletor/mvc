@@ -1,0 +1,101 @@
+﻿@model WebApplication4.Models.Exam
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Exam</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        </dl>
+    <table class="table">
+        @foreach (var item in Model.Questions)
+        {
+            <tr>
+                <th>
+                    ID
+                </th>
+                            <th>
+                            Pytanie
+                           </th>
+           </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionID)
+                </td>
+                            <td>
+                    @Html.DisplayFor(modelItem => item.Desc)
+                </td>
+                </tr>
+            <tr>
+                
+
+                <th>
+                    Odpowiedz A
+                </th>
+                <th>
+                    Odpowiedz B
+                </th>
+                <th>
+                    Odpowiedz C
+                </th>
+                <th>
+                    Odpowiedz D
+                </th>
+                <th>
+                    Odpowiedz Poprawna
+                </th>
+                <th>
+                    Punkty
+                </th>
+                <th></th>
+            </tr>
+            <tr>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescB)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescD)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Correct)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ExamID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -48,6 +48,8 @@ namespace WebApplication4.Models
         public DbSet<ExamResult> ExamResults { get; set; }
         public DbSet<ExamType> ExamTypes { get; set; }
         public DbSet<Grade> Grades { get; set; }
+
+        public System.Data.Entity.DbSet<WebApplication4.Models.Question> Questions { get; set; }
     }
 
     public class IdentityManager

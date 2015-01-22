@@ -161,7 +161,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +195,38 @@
     <Compile Include="Migrations\201501112008084_addedUserDataNullableBoolean.Designer.cs">
       <DependentUpon>201501112008084_addedUserDataNullableBoolean.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501130005310_questions.cs" />
+    <Compile Include="Migrations\201501130005310_questions.Designer.cs">
+      <DependentUpon>201501130005310_questions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501130012163_questions1.cs" />
+    <Compile Include="Migrations\201501130012163_questions1.Designer.cs">
+      <DependentUpon>201501130012163_questions1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501130016227_questions2.cs" />
+    <Compile Include="Migrations\201501130016227_questions2.Designer.cs">
+      <DependentUpon>201501130016227_questions2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501130019375_questions3.cs" />
+    <Compile Include="Migrations\201501130019375_questions3.Designer.cs">
+      <DependentUpon>201501130019375_questions3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501171510138_questions4.cs" />
+    <Compile Include="Migrations\201501171510138_questions4.Designer.cs">
+      <DependentUpon>201501171510138_questions4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501171618055_questions5.cs" />
+    <Compile Include="Migrations\201501171618055_questions5.Designer.cs">
+      <DependentUpon>201501171618055_questions5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501171636595_questions6.cs" />
+    <Compile Include="Migrations\201501171636595_questions6.Designer.cs">
+      <DependentUpon>201501171636595_questions6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501181918562_questions7.cs" />
+    <Compile Include="Migrations\201501181918562_questions7.Designer.cs">
+      <DependentUpon>201501181918562_questions7.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
@@ -203,10 +237,15 @@
     <Compile Include="Models\ExamType.cs" />
     <Compile Include="Models\Grade.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Question.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-WebApplication4-20150110051103.mdf" />
+    <Content Include="App_Data\aspnet-WebApplication4-20150110051103_log.ldf">
+      <DependentUpon>aspnet-WebApplication4-20150110051103.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ng-grid.css" />
@@ -232,6 +271,24 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Content\images\bg_all.jpg" />
+    <Content Include="Content\images\conbg.jpg" />
+    <Content Include="Content\images\conbgtop.jpg" />
+    <Content Include="Content\images\con_bot.jpg" />
+    <Content Include="Content\images\con_top.jpg" />
+    <Content Include="Content\images\footer.jpg" />
+    <Content Include="Content\images\header.jpg" />
+    <Content Include="Content\images\img1.jpg" />
+    <Content Include="Content\images\img2.jpg" />
+    <Content Include="Content\images\img3.jpg" />
+    <Content Include="Content\images\ls.png" />
+    <Content Include="Content\images\menubg.jpg" />
+    <Content Include="Content\images\menuhov.png" />
+    <Content Include="Content\images\postbot.jpg" />
+    <Content Include="Content\images\title_left.jpg" />
+    <Content Include="Content\images\ul.jpg" />
+    <Content Include="Views\Shared\index.html" />
+    <Content Include="Content\styles.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -260,9 +317,20 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Roles.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Exam\Create.cshtml" />
+    <Content Include="Views\Exam\Delete.cshtml" />
+    <Content Include="Views\Exam\Details.cshtml" />
+    <Content Include="Views\Exam\Edit.cshtml" />
+    <Content Include="Views\Exam\Index.cshtml" />
+    <Content Include="Views\Question\Create.cshtml" />
+    <Content Include="Views\Question\Delete.cshtml" />
+    <Content Include="Views\Question\Details.cshtml" />
+    <Content Include="Views\Question\Edit.cshtml" />
+    <Content Include="Views\Question\Index.cshtml" />
+    <Content Include="Views\Exam\Test.cshtml" />
+    <Content Include="Views\Shared\_LayoutPage1.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +361,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501112008084_addedUserDataNullableBoolean.resx">
       <DependentUpon>201501112008084_addedUserDataNullableBoolean.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501130005310_questions.resx">
+      <DependentUpon>201501130005310_questions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501130012163_questions1.resx">
+      <DependentUpon>201501130012163_questions1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501130016227_questions2.resx">
+      <DependentUpon>201501130016227_questions2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501130019375_questions3.resx">
+      <DependentUpon>201501130019375_questions3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501171510138_questions4.resx">
+      <DependentUpon>201501171510138_questions4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501171618055_questions5.resx">
+      <DependentUpon>201501171618055_questions5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501171636595_questions6.resx">
+      <DependentUpon>201501171636595_questions6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501181918562_questions7.resx">
+      <DependentUpon>201501181918562_questions7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
