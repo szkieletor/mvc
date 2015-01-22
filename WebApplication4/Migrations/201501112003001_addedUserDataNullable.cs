@@ -1,8 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace WebApplication4.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class addedUserDataNullable : DbMigration
     {
         public override void Up()

@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using System.Web.UI;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using WebApplication4.Models;
-using System.Web.Security;
 
 namespace WebApplication4.Controllers
 {
@@ -80,11 +80,11 @@ namespace WebApplication4.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser() { UserName = model.UserName, DateOfBirth = model.DateOfBirth, DateOfJoin = DateTime.Now, Email = model.Email, FirstName = model.FirstName, IsActive = model.IsActive, LastName = model.LastName, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Admin");
                 }
                 else
@@ -407,5 +407,112 @@ namespace WebApplication4.Controllers
             }
         }
         #endregion
+
+        public ActionResult ChangeUserInfo()
+        {
+            var manager = new IdentityManager();
+            var userData = manager.GetUserByID(User.Identity.GetUserId());
+            var viewModel = new ManageDetailsViewModel(userData);
+            return PartialView(viewModel);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> ChangeUserInfo(ManageDetailsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindAsync(User.Identity.GetUserName(), model.Password);
+                if (user != null)
+                {
+                    user.DateOfBirth = model.DateOfBirth;
+                    user.Email = model.Email;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.PhoneNumber = model.PhoneNumber;
+                    await UserManager.UpdateAsync(user);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid password!");
+                    return View(model);
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult LostPassword()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> LostPassword(LostPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var manager = new IdentityManager();
+                var user = manager.GetAllUsers().FirstOrDefault(u => u.Email == model.Email);
+                if (user != null)
+                {
+/*
+                    var subject = "Twoje nowe hasło";
+                    var token = await UserManager.
+                    var resetLink = "<a href='"
++ Url.Action("ResetPassword", "Account", new { rt = token }, "http")
++ "'>Reset Password Link</a>";
+                    //IdentityResult test = await UserManager.AddPasswordAsync(user.Id, newPassword);
+                    string body = "Link do zmiany hasła: " + resetLink;
+                    string from = "asdf@asdf.com";
+
+                    MailMessage message = new MailMessage(from, model.Email);
+                    message.Subject = subject;
+                    message.Body = body;
+                    SmtpClient client = new SmtpClient();*/
+
+                    try
+                    {
+                        //client.Send(message);
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid email");
+                    return View(model);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid email");
+                return View(model);
+            }
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string rt)
+        {
+            ResetPasswordViewModel model = new ResetPasswordViewModel();
+            model.ReturnToken = rt;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
+        }
     }
 }

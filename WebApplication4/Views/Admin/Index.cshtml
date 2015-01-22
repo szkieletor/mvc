@@ -13,6 +13,7 @@
     <div> 
         @Html.Partial("Roles");
     </div>
-    Add user: <input type="button" value="Create user" onclick="location.href='@Url.Action("Register", "Account")'" />
+Add user: <input type="button" value="Create user" onclick=" location.href = '@Url.Action("Register", "Account")' "/>
+    @Html.ActionLink("Add classroom", "AddClassroom")
 </body>
 </html>

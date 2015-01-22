@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using WebApplication4.Models;
+using WebApplication4.Services;
 
 namespace WebApplication4.Controllers
 {
@@ -24,26 +22,24 @@ namespace WebApplication4.Controllers
             var manager = new IdentityManager();
             var user = manager.GetUserByName(changedUserData.User.UserName);
             manager.ClearUserRoles(user.Id);
-            if (changedUserData.Admin.IsActive == true) manager.AddUserToRole(user.Id, "Admin");
-            if (changedUserData.Teacher.IsActive == true) manager.AddUserToRole(user.Id, "Teacher");
-            if (changedUserData.Student.IsActive == true) manager.AddUserToRole(user.Id, "Student");
-            if (changedUserData.Parent.IsActive == true) manager.AddUserToRole(user.Id, "Parent");
+            if (changedUserData.Admin.IsActive) manager.AddUserToRole(user.Id, "Admin");
+            if (changedUserData.Teacher.IsActive) manager.AddUserToRole(user.Id, "Teacher");
+            if (changedUserData.Student.IsActive) manager.AddUserToRole(user.Id, "Student");
+            if (changedUserData.Parent.IsActive) manager.AddUserToRole(user.Id, "Parent");
         }
 
 
         public JsonResult GetRoles()
         {
             var manager = new IdentityManager();
-            var roles = manager.GetAllRoles();
             var users = manager.GetAllUsers();
             var userList = new List<UserWithRolesViewModel>();
             foreach (var user in users)
             {
                 var userWithRolesViewModel = new UserWithRolesViewModel();
-                var userViewModel = new UserViewModel();
-                userViewModel.UserName = user.UserName;
+                var userViewModel = new UserViewModel {UserName = user.UserName};
                 userWithRolesViewModel.User = userViewModel;
-                var roleViewModel = new RoleViewModel();
+
                 userWithRolesViewModel.Admin.Name = "Admin";
                 if (user.Roles.FirstOrDefault(r => r.Role.Name == "Admin") != null) userWithRolesViewModel.Admin.IsActive = true;
                 else userWithRolesViewModel.Admin.IsActive = false;
@@ -65,5 +61,30 @@ namespace WebApplication4.Controllers
 
             return Json(userList);
         }
-	}
+
+        public ActionResult AddClassroom()
+        {
+
+            var service = new TeacherService();
+            IEnumerable<ApplicationUser> teachers = service.GetAllTeachers();
+            var classroom = new ClassroomViewModel()
+            {
+                Teachers = teachers
+            };
+            return View(classroom);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddClassroom(ClassroomViewModel model)
+        {
+            var service = new ClassroomService();
+            var classroom = new Classroom()
+            {
+
+            };
+            service.AddClassroom(classroom);
+            return View("Index");
+        }
+    }
 }
